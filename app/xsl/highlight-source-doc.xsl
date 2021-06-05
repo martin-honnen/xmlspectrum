@@ -120,11 +120,15 @@
     </xsl:template>
     
     <xsl:template match="comment()" mode="render-spans" expand-text="yes">
+        <span class="z" data-xpath="{path(.)}">&lt;!--</span>
         <span class="cm" data-xpath="{path(.)}">{.}</span>
+        <span class="z" data-xpath="{path(.)}">--&gt;</span>
     </xsl:template>
     
-    <xsl:template match="processing-instruction()" mode="render-spans">
-        <span class="pi" data-xpath="{path(.)}">{.}</span>
+    <xsl:template match="processing-instruction()" mode="render-spans" expand-text="yes">
+        <span class="z" data-xpath="{path(.)}">&lt;?</span>
+        <span class="pi" data-xpath="{path(.)}">{node-name(), .}</span>
+        <span class="z" data-xpath="{path(.)}">?&gt;</span>
     </xsl:template>
 
     <xsl:mode name="strip-namespace" on-no-match="shallow-copy"/>
