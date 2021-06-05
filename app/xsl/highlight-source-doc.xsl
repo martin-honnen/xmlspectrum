@@ -127,7 +127,7 @@
         <span class="atn" data-xpath="{$xpath}">{node-name()}</span>
         <span class="atneq" data-xpath="{$xpath}">=</span>
         <span class="z" data-xpath="{$xpath}">"</span>
-        <span class="av" data-xpath="{$xpath}">{.}</span>
+        <span class="av" data-xpath="{$xpath}">{serialize(string(), map { 'method' : 'xml' })}</span>
         <span class="z" data-xpath="{$xpath}">"</span>
     </xsl:template>
 
@@ -142,7 +142,7 @@
     </xsl:template>
     
     <xsl:template match="text()" mode="render-spans" expand-text="yes">
-        <span class="txt" data-xpath="{path(.)}">{.}</span>
+        <span class="txt" data-xpath="{path(.)}">{serialize(., map { 'method' : 'xml' })}</span>
     </xsl:template>
     
     <xsl:template match="comment()" mode="render-spans" expand-text="yes">
