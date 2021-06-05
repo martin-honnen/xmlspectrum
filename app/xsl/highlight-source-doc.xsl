@@ -91,7 +91,7 @@
         <span class="es" data-xpath="{$xpath}">&lt;</span>
         <span class="en" data-xpath="{$xpath}">{node-name()}</span>
 
-        <xsl:apply-templates select="namespace::*[not(. = 'http://www.w3.org/XML/1998/namespace')][not(local-name() = $parent-in-scope-namespaces!map:keys(.))]" mode="#current"/>
+        <xsl:apply-templates select="namespace::*[not(. = 'http://www.w3.org/XML/1998/namespace')][not(some $ns in $parent-in-scope-namespaces satisfies deep-equal($ns, map { local-name() : string() }))]" mode="#current"/>
 
         <xsl:apply-templates mode="#current" select="@*"/>
         
