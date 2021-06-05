@@ -59,6 +59,15 @@
             </body>
         </html>    
     </xsl:template>
+
+    <xsl:function name="f:render-tree" as="node()*">
+        <xsl:param name="input-node" as="node()"/>
+        <xsl:variable name="mark-up-spans" as="node()*">
+            <xsl:apply-templates select="$input-node" mode="render-spans"/>
+        </xsl:variable>
+        <xsl:sequence
+            select="if ($css-inline eq 'no') then $mark-up-spans else f:style-spans($mark-up-spans)"/>
+    </xsl:function>
     
     <xsl:mode name="render" on-no-match="shallow-skip"/>
     
