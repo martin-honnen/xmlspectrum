@@ -19,6 +19,29 @@
                 <title>XMLSpectrum test</title>
             </head>
             <body>
+                <section>
+                    <h1>Comparison</h1>
+                    <section>
+                        <xsl:variable name="xmlspectrum">
+                            <xsl:apply-templates select="f:render(serialize(.), 'xml', '')" mode="strip-namespace"/>
+                        </xsl:variable>
+                        <xsl:variable name="tree-spans">
+                            <xsl:apply-templates mode="render-spans" select="."/>
+                        </xsl:variable>
+                        <xsl:variable name="tree-spans-stripped-data">
+                            <xsl:apply-templates select="$tree-spans/*:span" mode="remove-data-atts"/>
+                        </xsl:variable>
+                        <h2>Result: <code xsl:expand-text="yes">{deep-equal($xmlspectrum, $tree-spans-stripped-data)}</code></h2>
+                        <code data-result="{deep-equal($xmlspectrum, $tree-spans-stripped-data)}" style="display: flex; flex-direction: row;">
+                            <pre style="flex: 1;">
+                                <xsl:sequence select="$xmlspectrum"/>
+                            </pre>
+                            <pre style="flex: 1;">
+                                <xsl:sequence select="$tree-spans-stripped-data"/>
+                            </pre>
+                        </code>
+                    </section>
+                </section>
                 <h1>XMLSpectrum test</h1>
                 <section>
                     <h2>Original XML spectrum</h2>
@@ -72,7 +95,7 @@
             <xsl:when test="has-children(.)">
                 <xsl:apply-templates mode="#current"/>
                 <span class="ez" data-xpath="{$xpath}">&lt;/</span>
-                <span class="en" data-xpath="{$xpath}">{node-name()}</span>
+                <span class="cl" data-xpath="{$xpath}">{node-name()}</span>
                 <span class="ec" data-xpath="{$xpath}">></span>
             </xsl:when>
             <xsl:otherwise>
@@ -103,4 +126,28 @@
     <xsl:template match="processing-instruction()" mode="render-spans">
         <span class="pi" data-xpath="{path(.)}">{.}</span>
     </xsl:template>
+
+    <xsl:mode name="strip-namespace" on-no-match="shallow-copy"/>
+
+    <xsl:template match="*" mode="strip-namespace">
+        <xsl:element name="{local-name()}">
+            <xsl:apply-templates select="@*" mode="#current"/>
+            <xsl:apply-templates  mode="#current"/>
+        </xsl:element>
+    </xsl:template>
+
+    <xsl:template match="*:span[@class = 'txt'][. = '']" mode="strip-namespace"/>
+
+    <xsl:mode name="remove-data-atts" on-no-match="shallow-copy"/>
+
+    <xsl:template match="*" mode="remove-data-atts">
+        <xsl:element name="{local-name()}">
+            <xsl:apply-templates select="@*[not(starts-with(local-name(), 'data-'))]" mode="#current"/>
+            <xsl:apply-templates  mode="#current"/>
+        </xsl:element>
+    </xsl:template>
+
+    <xsl:template match="*:span[@class = 'txt'][. = '']" mode="remove-data-atts"/>
+
+
 </xsl:stylesheet>

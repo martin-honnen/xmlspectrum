@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="xmlspectrum-fx-dist">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/gui-project/xmlspectrum-fx-dist.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

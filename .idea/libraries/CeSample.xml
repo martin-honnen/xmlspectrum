@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="CeSample">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/resources/CeSample.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
