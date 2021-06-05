@@ -87,12 +87,14 @@
         
         <span class="es" data-xpath="{$xpath}">&lt;</span>
         <span class="en" data-xpath="{$xpath}">{node-name()}</span>
-        <span class="scx" data-xpath="{$xpath}">></span>
-        
+
+        <xsl:apply-templates select="namespace::*[not(. = 'http://www.w3.org/XML/1998/namespace')]" mode="#current"/>
+
         <xsl:apply-templates mode="#current" select="@*"/>
         
         <xsl:choose>
             <xsl:when test="has-children(.)">
+                <span class="scx" data-xpath="{$xpath}">></span>
                 <xsl:apply-templates mode="#current"/>
                 <span class="ez" data-xpath="{$xpath}">&lt;/</span>
                 <span class="cl" data-xpath="{$xpath}">{node-name()}</span>
@@ -109,6 +111,16 @@
         <xsl:variable name="xpath" select="path(.)"/>
         <span class="z"> </span>
         <span class="atn" data-xpath="{$xpath}">{node-name()}</span>
+        <span class="atneq" data-xpath="{$xpath}">=</span>
+        <span class="z" data-xpath="{$xpath}">"</span>
+        <span class="av" data-xpath="{$xpath}">{.}</span>
+        <span class="z" data-xpath="{$xpath}">"</span>
+    </xsl:template>
+
+    <xsl:template match="namespace-node()" mode="render-spans" expand-text="yes">
+        <xsl:variable name="xpath" select="path(.)"/>
+        <span class="z"><xsl:text> </xsl:text></span>
+        <span class="atn" data-xpath="{$xpath}">{if (local-name() = '') then 'xmlns' else 'xmlns:' || node-name()}</span>
         <span class="atneq" data-xpath="{$xpath}">=</span>
         <span class="z" data-xpath="{$xpath}">"</span>
         <span class="av" data-xpath="{$xpath}">{.}</span>
