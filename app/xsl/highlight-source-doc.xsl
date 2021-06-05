@@ -109,7 +109,7 @@
     
     <xsl:template match="@*" mode="render-spans" expand-text="yes">
         <xsl:variable name="xpath" select="path(.)"/>
-        <span class="z"> </span>
+        <span class="z"><xsl:text> </xsl:text></span>
         <span class="atn" data-xpath="{$xpath}">{node-name()}</span>
         <span class="atneq" data-xpath="{$xpath}">=</span>
         <span class="z" data-xpath="{$xpath}">"</span>
