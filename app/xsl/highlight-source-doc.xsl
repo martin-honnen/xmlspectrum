@@ -48,10 +48,6 @@
                     <h2>Original XML spectrum</h2>
                     <pre><xsl:sequence select="f:render(serialize(.), 'xml', '')"/></pre>
                 </section>
-                <!--<section>
-                    <h2>recursive XML spectrum</h2>
-                    <pre><xsl:apply-templates mode="render" select="."/></pre>
-                </section>-->
                 <section>
                     <h2>emit XML spectrum spans</h2>
                     <pre><xsl:apply-templates mode="render-spans" select="."/></pre>
@@ -68,27 +64,6 @@
         <xsl:sequence
             select="if ($css-inline eq 'no') then $mark-up-spans else f:style-spans($mark-up-spans)"/>
     </xsl:function>
-    
-    <xsl:mode name="render" on-no-match="shallow-skip"/>
-    
-    <xsl:template match="*" mode="render">
-        <xsl:variable name="xml" select="serialize(.)"/>
-        <xsl:variable name="start-tag" select="$xml => replace('>(.*$)', '>', 's')"/>
-        <xsl:comment select="'start-tag', $start-tag"/>
-        <xsl:sequence select="f:render($start-tag, 'xml', '')"/>
-        
-        <xsl:apply-templates mode="#current"/>
-        
-        <xsl:variable name="end-tag" select="$xml => replace('.*(&lt;/[^&lt;]+$)', '$1', 's')"/>
-        
-        <xsl:comment select="'end-tag', $end-tag"/>
-        
-        <xsl:sequence select="f:render($end-tag, 'xml', '')"/>
-    </xsl:template>
-    
-    <xsl:template match="text() | comment() | processing-instruction()" mode="render">
-        <xsl:sequence select="f:render(serialize(.), 'xml', '')"/>
-    </xsl:template>
     
     <xsl:mode name="render-spans" on-no-match="shallow-skip"/>
     
