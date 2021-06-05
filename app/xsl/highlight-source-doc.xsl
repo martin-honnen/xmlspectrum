@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:map="http://www.w3.org/2005/xpath-functions/map"
     xmlns:f="internal"
     exclude-result-prefixes="#all"
     version="3.0">
@@ -83,19 +84,23 @@
     <xsl:mode name="render-spans" on-no-match="shallow-skip"/>
     
     <xsl:template match="*" mode="render-spans" expand-text="yes">
+        <xsl:param name="parent-in-scope-namespaces" tunnel="yes" as="map(xs:string, xs:string)*" select="()"/>
+        <xsl:variable name="current-in-scope-namespaces" as="map(xs:string, xs:string)*" select="in-scope-prefixes(.)[. != 'xml']!map { . : namespace-uri-for-prefix(., current()) => string() }"/>
         <xsl:variable name="xpath" select="path(.)"/>
         
         <span class="es" data-xpath="{$xpath}">&lt;</span>
         <span class="en" data-xpath="{$xpath}">{node-name()}</span>
 
-        <xsl:apply-templates select="namespace::*[not(. = 'http://www.w3.org/XML/1998/namespace')]" mode="#current"/>
+        <xsl:apply-templates select="namespace::*[not(. = 'http://www.w3.org/XML/1998/namespace')][not(local-name() = $parent-in-scope-namespaces!map:keys(.))]" mode="#current"/>
 
         <xsl:apply-templates mode="#current" select="@*"/>
         
         <xsl:choose>
             <xsl:when test="has-children(.)">
                 <span class="scx" data-xpath="{$xpath}">></span>
-                <xsl:apply-templates mode="#current"/>
+                <xsl:apply-templates mode="#current">
+                    <xsl:with-param name="parent-in-scope-namespaces" tunnel="yes" as="map(xs:string, xs:string)*" select="f:merge-namespaces($parent-in-scope-namespaces, $current-in-scope-namespaces)"/>
+                </xsl:apply-templates>
                 <span class="ez" data-xpath="{$xpath}">&lt;/</span>
                 <span class="cl" data-xpath="{$xpath}">{node-name()}</span>
                 <span class="ec" data-xpath="{$xpath}">></span>
@@ -165,5 +170,11 @@
 
     <xsl:template match="*:span[@class = 'txt'][. = '']" mode="remove-data-atts"/>
 
-
+    <xsl:function name="f:merge-namespaces" as="map(xs:string, xs:string)*">
+        <xsl:param name="parent-in-scope-namespaces" as="map(xs:string, xs:string)*"/>
+        <xsl:param name="current-in-scope-namespaces" as="map(xs:string, xs:string)*"/>
+        <xsl:for-each-group select="$parent-in-scope-namespaces, $current-in-scope-namespaces" group-by="map:keys(.)">
+            <xsl:sequence select="current-group()[last()]"/>
+        </xsl:for-each-group>
+    </xsl:function>
 </xsl:stylesheet>

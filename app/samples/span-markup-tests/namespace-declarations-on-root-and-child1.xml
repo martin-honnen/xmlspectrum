@@ -1,0 +1,3 @@
+<root xmlns="http://example.com/ns1">
+    <ns2:foo xmlns:ns2="http://example.org/ns2">text</ns2:foo>
+</root>

@@ -1,0 +1,1 @@
+<root xmlns="http://example.com/ns1"><child xmlns="http://example.com/ns2"><grandchild xmlns="http://example.com/ns1">value</grandchild></child></root>
