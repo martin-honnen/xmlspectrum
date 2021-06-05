@@ -267,7 +267,7 @@
   
   <xsl:function name="f:expected-offset" as="xs:integer">
     <xsl:param name="in"/>
-    <xsl:value-of select="if ($in eq '?&gt;') then 2
+    <xsl:sequence select="if ($in eq '?&gt;') then 2
                           else if ($in eq '--&gt;') then 3
                           else if ($in eq ']]>') then 9
                           else 1"/>
