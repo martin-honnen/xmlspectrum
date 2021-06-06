@@ -73,8 +73,8 @@
         <xsl:variable name="xpath" select="path(.)"/>
 
         <span data-xpath="{$xpath}">
-            <span class="es" data-xpath="{$xpath}">&lt;</span>
-            <span class="en" data-xpath="{$xpath}">{node-name()}</span>
+            <span class="es">&lt;</span>
+            <span class="en">{node-name()}</span>
 
             <xsl:apply-templates select="namespace::*[not(. = 'http://www.w3.org/XML/1998/namespace')][not(some $ns in $parent-in-scope-namespaces satisfies deep-equal($ns, map { local-name() : string() }))]" mode="#current"/>
 
@@ -82,16 +82,16 @@
 
             <xsl:choose>
                 <xsl:when test="has-children(.)">
-                    <span class="scx" data-xpath="{$xpath}">></span>
+                    <span class="scx">></span>
                     <xsl:apply-templates mode="#current">
                         <xsl:with-param name="parent-in-scope-namespaces" tunnel="yes" as="map(xs:string, xs:string)*" select="f:merge-namespaces($parent-in-scope-namespaces, $current-in-scope-namespaces)"/>
                     </xsl:apply-templates>
-                    <span class="ez" data-xpath="{$xpath}">&lt;/</span>
-                    <span class="cl" data-xpath="{$xpath}">{node-name()}</span>
-                    <span class="ec" data-xpath="{$xpath}">></span>
+                    <span class="ez">&lt;/</span>
+                    <span class="cl">{node-name()}</span>
+                    <span class="ec">></span>
                 </xsl:when>
                 <xsl:otherwise>
-                    <span class="sz" data-xpath="{$xpath}">/></span>
+                    <span class="sz">/></span>
                 </xsl:otherwise>
             </xsl:choose>
         </span>

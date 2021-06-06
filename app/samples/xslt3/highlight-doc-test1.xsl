@@ -59,8 +59,8 @@
             <head>
                 <title>Highlighting test</title>
                 <style xsl:expand-text="no">
-                    .assert { background-color: #f1adba; }
-                    .test { background-color: #c4f1c4; }
+                    .assert { border: 1px solid red; }
+                    .test { border: 1px solid green; }
                 </style>
             </head>
             <body>
