@@ -888,6 +888,22 @@
         <xsl:value-of select="."/>
       </xsl:copy>
     </xsl:for-each>
+
   </xsl:function>
+
+  <xsl:function name="f:style-color-spans" as="node()*">
+    <xsl:param name="input" as="node()*"/>
+    <xsl:apply-templates mode="style-spans" select="$input"/>
+  </xsl:function>
+
+  <xsl:mode name="style-spans" on-no-match="shallow-copy"/>
+
+  <xsl:template mode="style-spans" match="*:span[@class = $color-modes/color/class]">
+    <xsl:copy>
+      <xsl:apply-templates mode="#current" select="@*"/>
+      <xsl:attribute name="style" select="'color : #' || $color-modes/color[class = current()/@class]/@value"/>
+      <xsl:apply-templates mode="#current"/>
+    </xsl:copy>
+  </xsl:template>
   
 </xsl:stylesheet>
