@@ -60,8 +60,18 @@
                 <title>Highlighting test</title>
                 <style xsl:expand-text="no">
                     .element { display: inline; }
+
                     .assert { border-inline: 3px solid red; }
+
+                    element.assert::before {
+                    content: "❗";
+                    }
+
                     .test { border-inline: 3px solid green; }
+
+                    .element.test::before {
+                    content: "✅";
+                    }
                 </style>
             </head>
             <body>
