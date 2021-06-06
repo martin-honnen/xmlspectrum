@@ -72,7 +72,7 @@
         <xsl:variable name="current-in-scope-namespaces" as="map(xs:string, xs:string)*" select="in-scope-prefixes(.)[. != 'xml']!map { . : namespace-uri-for-prefix(., current()) => string() }"/>
         <xsl:variable name="xpath" select="path(.)"/>
 
-        <span data-xpath="{$xpath}">
+        <span class="element" data-xpath="{$xpath}">
             <span class="es">&lt;</span>
             <span class="en">{node-name()}</span>
 

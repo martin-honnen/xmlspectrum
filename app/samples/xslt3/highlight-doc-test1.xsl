@@ -59,6 +59,7 @@
             <head>
                 <title>Highlighting test</title>
                 <style xsl:expand-text="no">
+                    .element { display: inline-block; }
                     .assert { border: 1px solid red; }
                     .test { border: 1px solid green; }
                 </style>
