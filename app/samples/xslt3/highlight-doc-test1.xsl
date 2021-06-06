@@ -84,6 +84,7 @@
     <xsl:template mode="add-svrl" match="*:span[key('svrl-failed-asserts', @data-xpath, $svrl), key('svrl-reported-tests', @data-xpath, $svrl)]">
         <xsl:comment>@data-xpath: {@data-xpath}</xsl:comment>
         <xsl:copy>
+            <xsl:attribute name="title" select="key('svrl-failed-asserts', @data-xpath, $svrl)!(@location, *), key('svrl-reported-tests', @data-xpath, $svrl)!(@location, *)"/>
             <xsl:attribute name="class" select="@class, if (key('svrl-failed-asserts', @data-xpath, $svrl)) then 'assert' else if (key('svrl-reported-tests', @data-xpath, $svrl)) then 'test' else()"/>
             <xsl:copy-of select="@* except @class"/>
             <xsl:apply-templates mode="#current"/>
